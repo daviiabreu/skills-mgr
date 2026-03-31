@@ -54,7 +54,7 @@ AI coding tools ship with 100+ skills. Most are noise for any given project. `sk
 | **OpenCode**       | `~/.config/opencode/skills/` | `<project>/.opencode/skills/` |
 | **Roo Code**       | `~/.roo/skills/`             | `<project>/.roo/skills/`      |
 | **Trae**           | `~/.trae/skills/`            | `<project>/.trae/skills/`     |
-| **VS Code**        | `~/.vscode/skills/`          | `<project>/.vscode/skills/`   |
+| **VS Code**        | `~/.vscode-ai/skills/`       | `<project>/.vscode-ai/skills/`|
 | **Windsurf**       | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
 | **Zed**            | `~/.zed/skills/`             | `<project>/.zed/skills/`      |
 

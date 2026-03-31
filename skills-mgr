@@ -32,7 +32,7 @@ tool_global_dir() {
         opencode) echo "$HOME/.config/opencode/skills" ;;
         roo)      echo "$HOME/.roo/skills" ;;
         trae)     echo "$HOME/.trae/skills" ;;
-        vscode)   echo "$HOME/.vscode/skills" ;;
+        vscode)   echo "$HOME/.vscode-ai/skills" ;;
         windsurf) echo "$SKILLS_SOURCE" ;;
         zed)      echo "$HOME/.zed/skills" ;;
         *)        echo "$HOME/.claude/skills" ;;
@@ -57,7 +57,7 @@ tool_project_subdir() {
         opencode) echo ".opencode/skills" ;;
         roo)      echo ".roo/skills" ;;
         trae)     echo ".trae/skills" ;;
-        vscode)   echo ".vscode/skills" ;;
+        vscode)   echo ".vscode-ai/skills" ;;
         windsurf) echo ".agents/skills" ;;
         zed)      echo ".zed/skills" ;;
         *)        echo ".claude/skills" ;;
