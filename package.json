@@ -1,0 +1,39 @@
+{
+  "name": "@daviabreu/skills-mgr",
+  "version": "2.0.0",
+  "description": "Universal TUI and CLI for managing AI coding tool skills (Claude Code, Gemini CLI, Codex, OpenCode)",
+  "bin": {
+    "skills-mgr": "skills-mgr"
+  },
+  "files": [
+    "skills-mgr",
+    "skill-advisor.md",
+    "README.md"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "gemini-cli",
+    "codex",
+    "opencode",
+    "skills",
+    "manager",
+    "tui",
+    "cli",
+    "ai-tools"
+  ],
+  "author": "daviiabreu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daviiabreu/skills-mgr.git"
+  },
+  "homepage": "https://github.com/daviiabreu/skills-mgr",
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "engines": {
+    "node": ">=14"
+  }
+}
