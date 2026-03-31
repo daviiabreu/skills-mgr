@@ -271,14 +271,10 @@ _strings_en() {
     S_CLI_NO_GLOBAL="Global enable/disable not available for this tool (source = global)."
     # Sync
     S_SYNC_SCANNING="Scanning npm packages for skills..."
-    S_SYNC_FOUND_FMT="Found %s skill(s) in %s"
-    S_SYNC_LINKED_FMT="Linked: %s <- %s"
-    S_SYNC_REMOVED_FMT="Removed orphan: %s"
     S_SYNC_UPTODATE="All npm skills are up to date."
     S_SYNC_DONE_FMT="Sync complete: %s linked, %s removed"
     S_SYNC_INSTALL_FMT="Installing %s..."
     S_SYNC_UNINSTALL_FMT="Uninstalling %s..."
-    S_SYNC_NPM_BADGE="npm"
     # Usage
     S_USAGE_TITLE="skills-mgr - Universal AI coding tool skills manager"
     S_USAGE_USE="USAGE:"
@@ -438,14 +434,10 @@ _strings_pt() {
     S_CLI_NO_GLOBAL="Ativar/desativar global nao disponivel para esta ferramenta (fonte = global)."
     # Sync
     S_SYNC_SCANNING="Escaneando pacotes npm por skills..."
-    S_SYNC_FOUND_FMT="Encontrada(s) %s skill(s) em %s"
-    S_SYNC_LINKED_FMT="Vinculado: %s <- %s"
-    S_SYNC_REMOVED_FMT="Orfao removido: %s"
     S_SYNC_UPTODATE="Todas as skills npm estao atualizadas."
     S_SYNC_DONE_FMT="Sync completo: %s vinculadas, %s removidas"
     S_SYNC_INSTALL_FMT="Instalando %s..."
     S_SYNC_UNINSTALL_FMT="Desinstalando %s..."
-    S_SYNC_NPM_BADGE="npm"
     # Usage
     S_USAGE_TITLE="skills-mgr - Gerenciador universal de skills para ferramentas AI"
     S_USAGE_USE="USO:"
@@ -1651,22 +1643,12 @@ discover_npm_skills() {
             pkg_name="$parent/$pkg_name"
         fi
 
-        for skill_dir in "$pkg_dir"skills/*/; do
+        for skill_dir in "$pkg_dir/skills"/*/; do
             [[ -f "$skill_dir/SKILL.md" ]] || continue
             local skill_name; skill_name=$(basename "$skill_dir")
             echo "$pkg_name|$skill_name|${skill_dir%/}"
         done
     done
-}
-
-# Check if a skill in source is an npm-managed symlink
-is_npm_skill() {
-    local skill="$1"
-    local target="$SKILLS_SOURCE/$skill"
-    [[ -L "$target" ]] || return 1
-    local link_target; link_target=$(readlink "$target")
-    get_npm_root
-    [[ "$link_target" == *node_modules* ]] || return 1
 }
 
 # Sync npm skills: create symlinks for new, remove broken ones
@@ -1702,19 +1684,6 @@ cli_sync() {
     done < <(discover_npm_skills)
 
     # Phase 2: Clean up broken symlinks (from uninstalled packages)
-    for entry in "$SKILLS_SOURCE"/*/; do
-        [[ -e "$entry" ]] && continue  # exists = fine
-        local name; name=$(basename "$entry")
-        # Only remove if it's a broken symlink (not a missing dir)
-        local link="$SKILLS_SOURCE/$name"
-        if [[ -L "$link" && ! -e "$link" ]]; then
-            rm "$link"
-            echo -e "  ${RED}-${NC} $name ${DIM}($S_SYNC_REMOVED_FMT)${NC}"
-            removed=$((removed + 1))
-        fi
-    done
-
-    # Also check non-directory symlinks
     for entry in "$SKILLS_SOURCE"/*; do
         [[ -L "$entry" && ! -e "$entry" ]] || continue
         local name; name=$(basename "$entry")
@@ -1804,6 +1773,7 @@ usage() {
 
 # ---- Main ----
 
+main() {
 init
 
 # First run: prompt for language
@@ -1817,11 +1787,11 @@ case "${1:-}" in
     enable|on)
         [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr enable <skill|@cat> [--all|--tools t1,t2]"; exit 1; }
         if [[ "${3:-}" == "--all" ]]; then
-            _tools=(); while read -r _t; do _tools+=("$_t"); done < <(all_global_tools)
+            local _tools=(); while read -r _t; do _tools+=("$_t"); done < <(all_global_tools)
             with_tools enable "$2" "${_tools[@]}"
         elif [[ "${3:-}" == "--tools" ]]; then
             [[ -n "${4:-}" ]] || { echo "Usage: skills-mgr enable <skill> --tools claude,cursor"; exit 1; }
-            IFS=',' read -ra _tools <<< "$4"
+            local _tools; IFS=',' read -ra _tools <<< "$4"
             with_tools enable "$2" "${_tools[@]}"
         else
             cli_enable "$2"
@@ -1830,11 +1800,11 @@ case "${1:-}" in
     disable|off)
         [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr disable <skill|@cat> [--all|--tools t1,t2]"; exit 1; }
         if [[ "${3:-}" == "--all" ]]; then
-            _tools=(); while read -r _t; do _tools+=("$_t"); done < <(all_global_tools)
+            local _tools=(); while read -r _t; do _tools+=("$_t"); done < <(all_global_tools)
             with_tools disable "$2" "${_tools[@]}"
         elif [[ "${3:-}" == "--tools" ]]; then
             [[ -n "${4:-}" ]] || { echo "Usage: skills-mgr disable <skill> --tools claude,cursor"; exit 1; }
-            IFS=',' read -ra _tools <<< "$4"
+            local _tools; IFS=',' read -ra _tools <<< "$4"
             with_tools disable "$2" "${_tools[@]}"
         else
             cli_disable "$2"
@@ -1921,3 +1891,6 @@ case "${1:-}" in
     help|--help|-h) usage ;;
     *)              echo -e "${RED}$(printf "$S_CLI_UNKNOWN_FMT" "$1")${NC}"; usage; exit 1 ;;
 esac
+}
+
+main "$@"
