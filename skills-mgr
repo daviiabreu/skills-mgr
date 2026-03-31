@@ -1437,6 +1437,60 @@ tui_project_compare() {
 
 # ---- CLI (non-interactive) ----
 
+# List all tools that have separate global directories (not source-direct)
+all_global_tools() {
+    local all="amp augment claude cline continue copilot cursor factory gemini goose kilo kiro opencode roo trae vscode zed"
+    for t in $all; do echo "$t"; done
+}
+
+# Run enable/disable across multiple tools, temporarily switching context
+with_tools() {
+    local action="$1" skill="$2"
+    shift 2
+    local tools=("$@")
+    local saved_tool="$TOOL_NAME"
+    local saved_global="$GLOBAL_SKILLS"
+    local saved_subdir="$TOOL_PROJECT_SUBDIR"
+    local total=0
+
+    for t in "${tools[@]}"; do
+        TOOL_NAME="$t"
+        apply_tool
+        tool_has_global_control || continue
+
+        local count=0
+        while read -r s; do
+            if [[ "$action" == "enable" ]]; then
+                enable_skill_global "$s" && count=$((count + 1))
+            else
+                disable_skill_global "$s" 2>/dev/null && count=$((count + 1))
+            fi
+        done < <(expand_target "$skill")
+
+        if [[ $count -gt 0 ]]; then
+            local display; display=$(tool_display_name "$t")
+            if [[ "$action" == "enable" ]]; then
+                echo -e "  ${GREEN}+${NC} ${BOLD}$display${NC}: $count skill(s)"
+            else
+                echo -e "  ${RED}-${NC} ${BOLD}$display${NC}: $count skill(s)"
+            fi
+            total=$((total + count))
+        fi
+    done
+
+    # Restore original context
+    TOOL_NAME="$saved_tool"
+    GLOBAL_SKILLS="$saved_global"
+    TOOL_PROJECT_SUBDIR="$saved_subdir"
+
+    echo ""
+    if [[ "$action" == "enable" ]]; then
+        echo -e "$(printf "$S_CLI_ENABLED_FMT" "$total") ${DIM}(${#tools[@]} tools)${NC}"
+    else
+        echo -e "$(printf "$S_CLI_DISABLED_FMT" "$total") ${DIM}(${#tools[@]} tools)${NC}"
+    fi
+}
+
 cli_enable() {
     if ! tool_has_global_control; then
         echo -e "${RED}${S_CLI_NO_GLOBAL}${NC}"; return 1
@@ -1723,8 +1777,8 @@ usage() {
     echo ""
     echo -e "${BOLD}${S_USAGE_DIRECT}${NC}"
     echo "  status [category]                      $S_USAGE_STATUS"
-    echo "  enable|on  <skill|@cat>                $S_USAGE_ENABLE"
-    echo "  disable|off <skill|@cat>               $S_USAGE_DISABLE"
+    echo "  enable|on  <skill|@cat> [--all|--tools] $S_USAGE_ENABLE"
+    echo "  disable|off <skill|@cat> [--all|--tools] $S_USAGE_DISABLE"
     echo "  info <skill>                           $S_USAGE_INFO"
     echo "  categories|cats                        $S_USAGE_CATS"
     echo "  projects|ps                            $S_USAGE_PROJECTS"
@@ -1760,8 +1814,32 @@ fi
 case "${1:-}" in
     "")              tui_main_menu ;;
     status|s)        cli_status "${2:-}" ;;
-    enable|on)       [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr enable <skill|@cat>"; exit 1; }; cli_enable "$2" ;;
-    disable|off)     [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr disable <skill|@cat>"; exit 1; }; cli_disable "$2" ;;
+    enable|on)
+        [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr enable <skill|@cat> [--all|--tools t1,t2]"; exit 1; }
+        if [[ "${3:-}" == "--all" ]]; then
+            _tools=(); while read -r _t; do _tools+=("$_t"); done < <(all_global_tools)
+            with_tools enable "$2" "${_tools[@]}"
+        elif [[ "${3:-}" == "--tools" ]]; then
+            [[ -n "${4:-}" ]] || { echo "Usage: skills-mgr enable <skill> --tools claude,cursor"; exit 1; }
+            IFS=',' read -ra _tools <<< "$4"
+            with_tools enable "$2" "${_tools[@]}"
+        else
+            cli_enable "$2"
+        fi
+        ;;
+    disable|off)
+        [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr disable <skill|@cat> [--all|--tools t1,t2]"; exit 1; }
+        if [[ "${3:-}" == "--all" ]]; then
+            _tools=(); while read -r _t; do _tools+=("$_t"); done < <(all_global_tools)
+            with_tools disable "$2" "${_tools[@]}"
+        elif [[ "${3:-}" == "--tools" ]]; then
+            [[ -n "${4:-}" ]] || { echo "Usage: skills-mgr disable <skill> --tools claude,cursor"; exit 1; }
+            IFS=',' read -ra _tools <<< "$4"
+            with_tools disable "$2" "${_tools[@]}"
+        else
+            cli_disable "$2"
+        fi
+        ;;
     info|i)          [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr info <skill>"; exit 1; }; cli_info "$2" ;;
     categories|cats) cli_categories ;;
     sync)            cli_sync ;;
