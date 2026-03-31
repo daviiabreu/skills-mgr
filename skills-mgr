@@ -4,7 +4,7 @@ set -euo pipefail
 # Skills Manager - Universal TUI for AI coding tool skills
 # Source: ~/.agents/skills/          (all available)
 # Target: tool-specific directory    (active skills)
-# Supported: Claude Code, Gemini CLI, Codex, OpenCode
+# Supported: 19 AI coding agents (see tool_display_name for full list)
 
 SKILLS_SOURCE="$HOME/.agents/skills"
 
@@ -16,30 +16,75 @@ TOOL_PROJECT_SUBDIR=""
 
 tool_global_dir() {
     case "$1" in
+        amp)      echo "$HOME/.amp/skills" ;;
+        augment)  echo "$HOME/.augment/skills" ;;
         claude)   echo "$HOME/.claude/skills" ;;
-        gemini)   echo "$HOME/.gemini/skills" ;;
+        cline)    echo "$HOME/.cline/skills" ;;
         codex)    echo "$SKILLS_SOURCE" ;;
+        continue) echo "$HOME/.continue/skills" ;;
+        copilot)  echo "$HOME/.copilot/skills" ;;
+        cursor)   echo "$HOME/.cursor/skills" ;;
+        factory)  echo "$HOME/.factory/skills" ;;
+        gemini)   echo "$HOME/.gemini/skills" ;;
+        goose)    echo "$HOME/.config/goose/skills" ;;
+        kilo)     echo "$HOME/.kilo/skills" ;;
+        kiro)     echo "$HOME/.kiro/skills" ;;
         opencode) echo "$HOME/.config/opencode/skills" ;;
+        roo)      echo "$HOME/.roo/skills" ;;
+        trae)     echo "$HOME/.trae/skills" ;;
+        vscode)   echo "$HOME/.vscode/skills" ;;
+        windsurf) echo "$SKILLS_SOURCE" ;;
+        zed)      echo "$HOME/.zed/skills" ;;
         *)        echo "$HOME/.claude/skills" ;;
     esac
 }
 
 tool_project_subdir() {
     case "$1" in
+        amp)      echo ".amp/skills" ;;
+        augment)  echo ".augment/skills" ;;
         claude)   echo ".claude/skills" ;;
-        gemini)   echo ".gemini/skills" ;;
+        cline)    echo ".cline/skills" ;;
         codex)    echo ".agents/skills" ;;
+        continue) echo ".continue/skills" ;;
+        copilot)  echo ".github/skills" ;;
+        cursor)   echo ".cursor/skills" ;;
+        factory)  echo ".factory/skills" ;;
+        gemini)   echo ".gemini/skills" ;;
+        goose)    echo ".goose/skills" ;;
+        kilo)     echo ".kilo/skills" ;;
+        kiro)     echo ".kiro/skills" ;;
         opencode) echo ".opencode/skills" ;;
+        roo)      echo ".roo/skills" ;;
+        trae)     echo ".trae/skills" ;;
+        vscode)   echo ".vscode/skills" ;;
+        windsurf) echo ".agents/skills" ;;
+        zed)      echo ".zed/skills" ;;
         *)        echo ".claude/skills" ;;
     esac
 }
 
 tool_display_name() {
     case "$1" in
+        amp)      echo "AMP" ;;
+        augment)  echo "Augment Code" ;;
         claude)   echo "Claude Code" ;;
-        gemini)   echo "Gemini CLI" ;;
+        cline)    echo "Cline" ;;
         codex)    echo "Codex" ;;
+        continue) echo "Continue" ;;
+        copilot)  echo "GitHub Copilot" ;;
+        cursor)   echo "Cursor" ;;
+        factory)  echo "Factory/Droid" ;;
+        gemini)   echo "Gemini CLI" ;;
+        goose)    echo "Goose" ;;
+        kilo)     echo "Kilo Code" ;;
+        kiro)     echo "Kiro" ;;
         opencode) echo "OpenCode" ;;
+        roo)      echo "Roo Code" ;;
+        trae)     echo "Trae" ;;
+        vscode)   echo "VS Code" ;;
+        windsurf) echo "Windsurf" ;;
+        zed)      echo "Zed" ;;
         *)        echo "$1" ;;
     esac
 }
@@ -113,7 +158,7 @@ _strings_en() {
     S_TOOL_TITLE="Target Tool"
     S_TOOL_CURRENT_FMT="Current: %s"
     S_TOOL_CHANGED_FMT="Switched to %s"
-    S_TOOL_CODEX_NOTE="Codex reads all skills from source — global enable/disable is per-project only."
+    S_TOOL_CODEX_NOTE="This tool reads all skills from source — global enable/disable is per-project only."
     # Global skills
     S_GLOBAL_TITLE_FMT="Global Skills (%s/%s active)"
     S_GLOBAL_TITLE_ALL_FMT="Global Skills (%s — all active via source)"
@@ -224,6 +269,16 @@ _strings_en() {
     S_CLI_UNKNOWN_FMT="Unknown command: %s"
     S_CLI_NOT_DIR_FMT="Not found: %s"
     S_CLI_NO_GLOBAL="Global enable/disable not available for this tool (source = global)."
+    # Sync
+    S_SYNC_SCANNING="Scanning npm packages for skills..."
+    S_SYNC_FOUND_FMT="Found %s skill(s) in %s"
+    S_SYNC_LINKED_FMT="Linked: %s <- %s"
+    S_SYNC_REMOVED_FMT="Removed orphan: %s"
+    S_SYNC_UPTODATE="All npm skills are up to date."
+    S_SYNC_DONE_FMT="Sync complete: %s linked, %s removed"
+    S_SYNC_INSTALL_FMT="Installing %s..."
+    S_SYNC_UNINSTALL_FMT="Uninstalling %s..."
+    S_SYNC_NPM_BADGE="npm"
     # Usage
     S_USAGE_TITLE="skills-mgr - Universal AI coding tool skills manager"
     S_USAGE_USE="USAGE:"
@@ -270,7 +325,7 @@ _strings_pt() {
     S_TOOL_TITLE="Ferramenta Alvo"
     S_TOOL_CURRENT_FMT="Atual: %s"
     S_TOOL_CHANGED_FMT="Alterado para %s"
-    S_TOOL_CODEX_NOTE="Codex le todas as skills da fonte — ativar/desativar global e apenas por projeto."
+    S_TOOL_CODEX_NOTE="Essa ferramenta le todas as skills da fonte — ativar/desativar global e apenas por projeto."
     # Global skills
     S_GLOBAL_TITLE_FMT="Skills Globais (%s/%s ativas)"
     S_GLOBAL_TITLE_ALL_FMT="Skills Globais (%s — todas ativas via fonte)"
@@ -381,6 +436,16 @@ _strings_pt() {
     S_CLI_UNKNOWN_FMT="Comando desconhecido: %s"
     S_CLI_NOT_DIR_FMT="Nao encontrado: %s"
     S_CLI_NO_GLOBAL="Ativar/desativar global nao disponivel para esta ferramenta (fonte = global)."
+    # Sync
+    S_SYNC_SCANNING="Escaneando pacotes npm por skills..."
+    S_SYNC_FOUND_FMT="Encontrada(s) %s skill(s) em %s"
+    S_SYNC_LINKED_FMT="Vinculado: %s <- %s"
+    S_SYNC_REMOVED_FMT="Orfao removido: %s"
+    S_SYNC_UPTODATE="Todas as skills npm estao atualizadas."
+    S_SYNC_DONE_FMT="Sync completo: %s vinculadas, %s removidas"
+    S_SYNC_INSTALL_FMT="Instalando %s..."
+    S_SYNC_UNINSTALL_FMT="Desinstalando %s..."
+    S_SYNC_NPM_BADGE="npm"
     # Usage
     S_USAGE_TITLE="skills-mgr - Gerenciador universal de skills para ferramentas AI"
     S_USAGE_USE="USO:"
@@ -438,8 +503,8 @@ load_tool() {
 save_tool() {
     local tool="$1"
     case "$tool" in
-        claude|gemini|codex|opencode) ;;
-        *) echo "Valid tools: claude, gemini, codex, opencode"; return 1 ;;
+        amp|augment|claude|cline|codex|continue|copilot|cursor|factory|gemini|goose|kilo|kiro|opencode|roo|trae|vscode|windsurf|zed) ;;
+        *) echo "Valid tools: amp, augment, claude, cline, codex, continue, copilot, cursor, factory, gemini, goose, kilo, kiro, opencode, roo, trae, vscode, windsurf, zed"; return 1 ;;
     esac
     echo "$tool" > "$TOOL_FILE"
     TOOL_NAME="$tool"
@@ -579,19 +644,49 @@ tui_select_tool() {
     echo ""
 
     local choice
-    choice=$(gum choose --cursor "▸ " --height 8 \
+    choice=$(gum choose --cursor "▸ " --height 22 \
+        "AMP" \
+        "Augment Code" \
         "Claude Code" \
-        "Gemini CLI" \
+        "Cline" \
         "Codex" \
-        "OpenCode") || true
+        "Continue" \
+        "Cursor" \
+        "Factory/Droid" \
+        "Gemini CLI" \
+        "GitHub Copilot" \
+        "Goose" \
+        "Kilo Code" \
+        "Kiro" \
+        "OpenCode" \
+        "Roo Code" \
+        "Trae" \
+        "VS Code" \
+        "Windsurf" \
+        "Zed") || true
     [[ -z "$choice" ]] && return
 
     local new_tool=""
     case "$choice" in
-        "Claude Code") new_tool="claude" ;;
-        "Gemini CLI")  new_tool="gemini" ;;
-        "Codex")       new_tool="codex" ;;
-        "OpenCode")    new_tool="opencode" ;;
+        "AMP")            new_tool="amp" ;;
+        "Augment Code")   new_tool="augment" ;;
+        "Claude Code")    new_tool="claude" ;;
+        "Cline")          new_tool="cline" ;;
+        "Codex")          new_tool="codex" ;;
+        "Continue")       new_tool="continue" ;;
+        "Cursor")         new_tool="cursor" ;;
+        "Factory/Droid")  new_tool="factory" ;;
+        "Gemini CLI")     new_tool="gemini" ;;
+        "GitHub Copilot") new_tool="copilot" ;;
+        "Goose")          new_tool="goose" ;;
+        "Kilo Code")      new_tool="kilo" ;;
+        "Kiro")           new_tool="kiro" ;;
+        "OpenCode")       new_tool="opencode" ;;
+        "Roo Code")       new_tool="roo" ;;
+        "Trae")           new_tool="trae" ;;
+        "VS Code")        new_tool="vscode" ;;
+        "Windsurf")       new_tool="windsurf" ;;
+        "Zed")            new_tool="zed" ;;
     esac
 
     [[ -z "$new_tool" ]] && return
@@ -1468,6 +1563,157 @@ cli_project_disable() {
     echo -e "\n$(printf "$S_CLI_PD_DONE_FMT" "$count" "$(basename "$project")")"
 }
 
+# ---- npm Sync ----
+
+NPM_MANIFEST="$CONFIG_DIR/npm-manifest.json"
+NPM_GLOBAL_ROOT=""
+
+get_npm_root() {
+    [[ -n "$NPM_GLOBAL_ROOT" ]] && return
+    NPM_GLOBAL_ROOT=$(npm root -g 2>/dev/null) || NPM_GLOBAL_ROOT=""
+}
+
+# Scan npm global packages for skills/ directories with SKILL.md files
+discover_npm_skills() {
+    get_npm_root
+    [[ -n "$NPM_GLOBAL_ROOT" && -d "$NPM_GLOBAL_ROOT" ]] || return
+
+    # Scan top-level and scoped packages
+    local pkg_dirs=()
+    for d in "$NPM_GLOBAL_ROOT"/*/; do
+        [[ -d "$d" ]] && pkg_dirs+=("$d")
+    done
+    for d in "$NPM_GLOBAL_ROOT"/@*/*/; do
+        [[ -d "$d" ]] && pkg_dirs+=("$d")
+    done
+
+    for pkg_dir in "${pkg_dirs[@]}"; do
+        [[ -d "$pkg_dir/skills" ]] || continue
+        local pkg_name
+        pkg_name=$(basename "$pkg_dir")
+        # For scoped packages, include scope
+        local parent; parent=$(basename "$(dirname "$pkg_dir")")
+        if [[ "$parent" == @* ]]; then
+            pkg_name="$parent/$pkg_name"
+        fi
+
+        for skill_dir in "$pkg_dir"skills/*/; do
+            [[ -f "$skill_dir/SKILL.md" ]] || continue
+            local skill_name; skill_name=$(basename "$skill_dir")
+            echo "$pkg_name|$skill_name|${skill_dir%/}"
+        done
+    done
+}
+
+# Check if a skill in source is an npm-managed symlink
+is_npm_skill() {
+    local skill="$1"
+    local target="$SKILLS_SOURCE/$skill"
+    [[ -L "$target" ]] || return 1
+    local link_target; link_target=$(readlink "$target")
+    get_npm_root
+    [[ "$link_target" == *node_modules* ]] || return 1
+}
+
+# Sync npm skills: create symlinks for new, remove broken ones
+cli_sync() {
+    echo -e "${DIM}$S_SYNC_SCANNING${NC}"
+    mkdir -p "$SKILLS_SOURCE"
+
+    local linked=0 removed=0
+
+    # Phase 1: Discover and link new npm skills
+    while IFS='|' read -r pkg_name skill_name skill_path; do
+        [[ -n "$pkg_name" ]] || continue
+        local target="$SKILLS_SOURCE/$skill_name"
+
+        if [[ -L "$target" ]]; then
+            # Already a symlink — update if target changed
+            local current; current=$(readlink "$target")
+            local expected="${skill_path%/}"
+            if [[ "$current" != "$expected" ]]; then
+                ln -sfn "$expected" "$target"
+                echo -e "  ${GREEN}↻${NC} $skill_name ${DIM}($pkg_name)${NC}"
+                linked=$((linked + 1))
+            fi
+        elif [[ -d "$target" ]]; then
+            # Real directory exists — skip (manual install takes precedence)
+            continue
+        else
+            # New skill — create symlink
+            ln -sfn "${skill_path%/}" "$target"
+            echo -e "  ${GREEN}+${NC} $skill_name ${DIM}($pkg_name)${NC}"
+            linked=$((linked + 1))
+        fi
+    done < <(discover_npm_skills)
+
+    # Phase 2: Clean up broken symlinks (from uninstalled packages)
+    for entry in "$SKILLS_SOURCE"/*/; do
+        [[ -e "$entry" ]] && continue  # exists = fine
+        local name; name=$(basename "$entry")
+        # Only remove if it's a broken symlink (not a missing dir)
+        local link="$SKILLS_SOURCE/$name"
+        if [[ -L "$link" && ! -e "$link" ]]; then
+            rm "$link"
+            echo -e "  ${RED}-${NC} $name ${DIM}($S_SYNC_REMOVED_FMT)${NC}"
+            removed=$((removed + 1))
+        fi
+    done
+
+    # Also check non-directory symlinks
+    for entry in "$SKILLS_SOURCE"/*; do
+        [[ -L "$entry" && ! -e "$entry" ]] || continue
+        local name; name=$(basename "$entry")
+        rm "$entry"
+        echo -e "  ${RED}-${NC} $name ${DIM}(orphan)${NC}"
+        removed=$((removed + 1))
+    done
+
+    if [[ $linked -eq 0 && $removed -eq 0 ]]; then
+        echo -e "${GREEN}$S_SYNC_UPTODATE${NC}"
+    else
+        echo ""
+        echo -e "$(printf "$S_SYNC_DONE_FMT" "$linked" "$removed")"
+    fi
+
+    # Save manifest
+    save_npm_manifest
+}
+
+save_npm_manifest() {
+    local manifest="$NPM_MANIFEST"
+    echo "{" > "$manifest"
+    echo '  "skills": {' >> "$manifest"
+    local first=true
+    for entry in "$SKILLS_SOURCE"/*/; do
+        local name; name=$(basename "$entry")
+        [[ -L "$SKILLS_SOURCE/$name" ]] || continue
+        local link_target; link_target=$(readlink "$SKILLS_SOURCE/$name")
+        [[ "$link_target" == *node_modules* ]] || continue
+        if $first; then first=false; else echo "," >> "$manifest"; fi
+        printf '    "%s": "%s"' "$name" "$link_target" >> "$manifest"
+    done
+    echo "" >> "$manifest"
+    echo "  }" >> "$manifest"
+    echo "}" >> "$manifest"
+}
+
+cli_npm_install() {
+    local pkg="$1"
+    echo -e "$(printf "$S_SYNC_INSTALL_FMT" "$pkg")"
+    npm i -g "$pkg" 2>&1 || { echo -e "${RED}npm install failed${NC}"; return 1; }
+    echo ""
+    cli_sync
+}
+
+cli_npm_uninstall() {
+    local pkg="$1"
+    echo -e "$(printf "$S_SYNC_UNINSTALL_FMT" "$pkg")"
+    npm uninstall -g "$pkg" 2>&1 || { echo -e "${RED}npm uninstall failed${NC}"; return 1; }
+    echo ""
+    cli_sync
+}
+
 usage() {
     echo -e "${BOLD}${S_USAGE_TITLE}${NC}"
     echo ""
@@ -1487,7 +1733,10 @@ usage() {
     echo "  project status [path]                  $S_USAGE_PROJ_STATUS"
     echo "  project enable [path] <skill|@cat>     $S_USAGE_PROJ_ENABLE"
     echo "  project disable [path] <skill|@cat>    $S_USAGE_PROJ_DISABLE"
-    echo "  tool [claude|gemini|codex|opencode]    $S_USAGE_TOOL"
+    echo "  sync                                   Sync skills from npm packages"
+    echo "  install <package>                      npm install + sync"
+    echo "  uninstall <package>                    npm uninstall + sync"
+    echo "  tool [name]                            $S_USAGE_TOOL"
     echo "  lang <en|pt>                           $S_USAGE_LANG"
     echo ""
     echo -e "${BOLD}${S_USAGE_EXAMPLES}${NC}"
@@ -1515,6 +1764,15 @@ case "${1:-}" in
     disable|off)     [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr disable <skill|@cat>"; exit 1; }; cli_disable "$2" ;;
     info|i)          [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr info <skill>"; exit 1; }; cli_info "$2" ;;
     categories|cats) cli_categories ;;
+    sync)            cli_sync ;;
+    install)
+        [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr install <package>"; exit 1; }
+        cli_npm_install "$2"
+        ;;
+    uninstall)
+        [[ -n "${2:-}" ]] || { echo "Usage: skills-mgr uninstall <package>"; exit 1; }
+        cli_npm_uninstall "$2"
+        ;;
     tool|--tool)
         if [[ -n "${2:-}" ]]; then
             save_tool "$2"
@@ -1522,7 +1780,7 @@ case "${1:-}" in
         else
             echo "Target tool: $(tool_display_name "$TOOL_NAME")"
             echo ""
-            echo "Available: claude, gemini, codex, opencode"
+            echo "Available: amp, augment, claude, cline, codex, continue, copilot, cursor, factory, gemini, goose, kilo, kiro, opencode, roo, trae, vscode, windsurf, zed"
             echo "Usage: skills-mgr tool <name>"
         fi
         ;;

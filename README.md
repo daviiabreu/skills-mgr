@@ -32,18 +32,33 @@
 
 ## Why
 
-AI coding tools ship with 100+ skills. Most are noise for any given project. `skills-mgr` lets you toggle skills on/off globally or per-project — across Claude Code, Gemini CLI, Codex, and OpenCode — from a single place.
+AI coding tools ship with 100+ skills. Most are noise for any given project. `skills-mgr` lets you toggle skills on/off globally or per-project — across 19 AI coding agents — from a single place.
 
 ## Supported Tools
 
-| Tool            | Global Skills                | Project Skills                |
-| --------------- | ---------------------------- | ----------------------------- |
-| **Claude Code** | `~/.claude/skills/`          | `<project>/.claude/skills/`   |
-| **Gemini CLI**  | `~/.gemini/skills/`          | `<project>/.gemini/skills/`   |
-| **Codex**       | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
-| **OpenCode**    | `~/.config/opencode/skills/` | `<project>/.opencode/skills/` |
+| Tool               | Global Skills                | Project Skills                |
+| ------------------ | ---------------------------- | ----------------------------- |
+| **AMP**            | `~/.amp/skills/`             | `<project>/.amp/skills/`      |
+| **Augment Code**   | `~/.augment/skills/`         | `<project>/.augment/skills/`  |
+| **Claude Code**    | `~/.claude/skills/`          | `<project>/.claude/skills/`   |
+| **Cline**          | `~/.cline/skills/`           | `<project>/.cline/skills/`    |
+| **Codex**          | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
+| **Continue**       | `~/.continue/skills/`        | `<project>/.continue/skills/` |
+| **Cursor**         | `~/.cursor/skills/`          | `<project>/.cursor/skills/`   |
+| **Factory/Droid**  | `~/.factory/skills/`         | `<project>/.factory/skills/`  |
+| **Gemini CLI**     | `~/.gemini/skills/`          | `<project>/.gemini/skills/`   |
+| **GitHub Copilot** | `~/.copilot/skills/`         | `<project>/.github/skills/`   |
+| **Goose**          | `~/.config/goose/skills/`    | `<project>/.goose/skills/`    |
+| **Kilo Code**      | `~/.kilo/skills/`            | `<project>/.kilo/skills/`     |
+| **Kiro**           | `~/.kiro/skills/`            | `<project>/.kiro/skills/`     |
+| **OpenCode**       | `~/.config/opencode/skills/` | `<project>/.opencode/skills/` |
+| **Roo Code**       | `~/.roo/skills/`             | `<project>/.roo/skills/`      |
+| **Trae**           | `~/.trae/skills/`            | `<project>/.trae/skills/`     |
+| **VS Code**        | `~/.vscode/skills/`          | `<project>/.vscode/skills/`   |
+| **Windsurf**       | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
+| **Zed**            | `~/.zed/skills/`             | `<project>/.zed/skills/`      |
 
-> \* Codex reads directly from source — all skills are always visible globally. Per-project scoping still works.
+> \* Codex and Windsurf read directly from source — all skills are always visible globally. Per-project scoping still works.
 
 All tools use the same `SKILL.md` format. Switch targets anytime with `skills-mgr tool <name>`.
 
@@ -110,6 +125,39 @@ On first run, you'll be asked to choose a language (English or Portuguese).
 
 Skills are never copied — only symlinked. Enable/disable is instant. Global skills are inherited by all projects. Project skills add on top.
 
+## npm Sync
+
+Install npm packages that ship skills and keep them synced:
+
+```bash
+# Install a package and auto-discover its skills
+skills-mgr install @some-org/agent-skills
+
+# Sync all global npm packages (discover new, remove orphans)
+skills-mgr sync
+
+# Uninstall a package and clean up its skills
+skills-mgr uninstall @some-org/agent-skills
+```
+
+npm skills are symlinked (not copied). When a package is uninstalled, `sync` detects broken symlinks and removes them. Manual skills (real directories) are never touched.
+
+A manifest is saved at `~/.config/skills-mgr/npm-manifest.json` tracking which skills came from npm.
+
+### Shipping skills in your npm package
+
+Add a `skills/` directory to your package with subdirectories containing `SKILL.md`:
+
+```
+my-package/
+  ├── package.json
+  └── skills/
+      ├── my-skill-a/
+      │   └── SKILL.md
+      └── my-skill-b/
+          └── SKILL.md
+```
+
 ## TUI Features
 
 - **Fuzzy search** across all skills with descriptions
@@ -123,13 +171,16 @@ Skills are never copied — only symlinked. Enable/disable is instant. Global sk
 
 ```
 skills-mgr                                 Interactive TUI
-skills-mgr tool [claude|gemini|codex|opencode]  Get/set target tool
+skills-mgr tool [name]                         Get/set target tool
 skills-mgr status [category]               Show skill status
 skills-mgr on|enable <skill|@cat>          Enable globally
 skills-mgr off|disable <skill|@cat>        Disable globally
 skills-mgr info <skill>                    Skill details
 skills-mgr cats                            List categories
 skills-mgr ps                              List registered projects
+skills-mgr sync                            Sync skills from npm packages
+skills-mgr install <package>               npm install + sync
+skills-mgr uninstall <package>             npm uninstall + sync
 skills-mgr project add [path]              Register project (default: .)
 skills-mgr project rm <path>               Unregister project
 skills-mgr project status [path]           Show project skills
