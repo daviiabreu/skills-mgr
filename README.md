@@ -49,16 +49,16 @@ AI coding tools ship with 100+ skills. Most are noise for any given project. `sk
 | **Gemini CLI**     | `~/.gemini/skills/`          | `<project>/.gemini/skills/`   |
 | **GitHub Copilot** | `~/.copilot/skills/`         | `<project>/.github/skills/`   |
 | **Goose**          | `~/.config/goose/skills/`    | `<project>/.goose/skills/`    |
-| **Kilo Code**      | `~/.kilo/skills/`            | `<project>/.kilo/skills/`     |
+| **Kilo Code**      | `~/.kilocode/skills/`        | `<project>/.kilocode/skills/` |
 | **Kiro**           | `~/.kiro/skills/`            | `<project>/.kiro/skills/`     |
 | **OpenCode**       | `~/.config/opencode/skills/` | `<project>/.opencode/skills/` |
 | **Roo Code**       | `~/.roo/skills/`             | `<project>/.roo/skills/`      |
 | **Trae**           | `~/.trae/skills/`            | `<project>/.trae/skills/`     |
-| **VS Code**        | `~/.vscode-ai/skills/`       | `<project>/.vscode-ai/skills/`|
-| **Windsurf**       | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
-| **Zed**            | `~/.zed/skills/`             | `<project>/.zed/skills/`      |
+| **VS Code**        | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
+| **Windsurf**       | `~/.windsurf/skills/`        | `<project>/.windsurf/skills/` |
+| **Zed**            | `~/.agents/skills/`\*        | `<project>/.agents/skills/`   |
 
-> \* Codex and Windsurf read directly from source — all skills are always visible globally. Per-project scoping still works.
+> \* Codex, VS Code, and Zed read directly from source — all skills are always visible globally. Per-project scoping still works.
 
 All tools use the same `SKILL.md` format. Switch targets anytime with `skills-mgr tool <name>`.
 

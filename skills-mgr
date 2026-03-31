@@ -27,14 +27,14 @@ tool_global_dir() {
         factory)  echo "$HOME/.factory/skills" ;;
         gemini)   echo "$HOME/.gemini/skills" ;;
         goose)    echo "$HOME/.config/goose/skills" ;;
-        kilo)     echo "$HOME/.kilo/skills" ;;
+        kilo)     echo "$HOME/.kilocode/skills" ;;
         kiro)     echo "$HOME/.kiro/skills" ;;
         opencode) echo "$HOME/.config/opencode/skills" ;;
         roo)      echo "$HOME/.roo/skills" ;;
         trae)     echo "$HOME/.trae/skills" ;;
-        vscode)   echo "$HOME/.vscode-ai/skills" ;;
-        windsurf) echo "$SKILLS_SOURCE" ;;
-        zed)      echo "$HOME/.zed/skills" ;;
+        vscode)   echo "$SKILLS_SOURCE" ;;
+        windsurf) echo "$HOME/.windsurf/skills" ;;
+        zed)      echo "$SKILLS_SOURCE" ;;
         *)        echo "$HOME/.claude/skills" ;;
     esac
 }
@@ -52,14 +52,14 @@ tool_project_subdir() {
         factory)  echo ".factory/skills" ;;
         gemini)   echo ".gemini/skills" ;;
         goose)    echo ".goose/skills" ;;
-        kilo)     echo ".kilo/skills" ;;
+        kilo)     echo ".kilocode/skills" ;;
         kiro)     echo ".kiro/skills" ;;
         opencode) echo ".opencode/skills" ;;
         roo)      echo ".roo/skills" ;;
         trae)     echo ".trae/skills" ;;
-        vscode)   echo ".vscode-ai/skills" ;;
-        windsurf) echo ".agents/skills" ;;
-        zed)      echo ".zed/skills" ;;
+        vscode)   echo ".agents/skills" ;;
+        windsurf) echo ".windsurf/skills" ;;
+        zed)      echo ".agents/skills" ;;
         *)        echo ".claude/skills" ;;
     esac
 }
@@ -1431,7 +1431,8 @@ tui_project_compare() {
 
 # List all tools that have separate global directories (not source-direct)
 all_global_tools() {
-    local all="amp augment claude cline continue copilot cursor factory gemini goose kilo kiro opencode roo trae vscode zed"
+    # Excludes source-direct tools: codex, vscode, zed (they read from ~/.agents/skills/)
+    local all="amp augment claude cline continue copilot cursor factory gemini goose kilo kiro opencode roo trae windsurf"
     for t in $all; do echo "$t"; done
 }
 
