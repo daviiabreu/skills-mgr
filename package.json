@@ -1,6 +1,6 @@
 {
   "name": "@daviabreu/skills-mgr",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Universal TUI and CLI for managing AI coding tool skills across 19 agents",
   "bin": {
     "skills-mgr": "skills-mgr"
