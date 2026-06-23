@@ -64,12 +64,6 @@ All tools use the same `SKILL.md` format. Switch targets anytime with `skills-mg
 
 ## Install
 
-### Homebrew (coming soon)
-
-```bash
-brew install daviabreu/tap/skills-mgr
-```
-
 ### npm
 
 ```bash
